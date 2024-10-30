@@ -3,22 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bing Search Automator</title>
+    <title>Bing Search Bot</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Bing Search Automator</h1>
-        <div class="input-group">
-            <label for="numSearches">Number of Searches:</label>
-            <input type="number" id="numSearches" name="numSearches" min="1" max="40" value="34">
+    <div id="container">
+        <h1>Bing Search Automation</h1>
+
+        <!-- Instructions Button as Text -->
+        <p id="instructionsBtn">Instructions</p>
+
+        <!-- Instructions Pop-up -->
+        <div id="instructionsPopup">
+            <button id="closeInstructions">×</button>
+            <p><strong>Instructions:</strong></p>
+            <ul>
+                <li>Ensure pop-ups are enabled in your browser for this website.</li>
+                <li>Maximum number of searches can be is 40.</li>
+                <li>The program opens each search in a new tab with a random delay between 5 to 10 seconds.</li>
+                <li>Click "Stop Searches" to halt the process and "Close All Tabs" to close only the tabs opened by this tool.</li>
+            </ul>
         </div>
-        <div class="buttons">
+
+        <label for="numSearches">Number of Searches (Max 40):</label>
+        <input type="number" id="numSearches" value="34" max="40" min="1">
+        
+        <div class="button-container">
             <button id="startSearches">Start Searches</button>
             <button id="stopSearches">Stop Searches</button>
             <button id="closeTabs">Close All Tabs</button>
         </div>
+
+        <!-- Line Loader -->
+        <div id="loader-container" style="display: none;">
+            <div id="loader-message">Initializing...</div>
+            <div id="progress-bar"></div>
+        </div>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
