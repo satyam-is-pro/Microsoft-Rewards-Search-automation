@@ -3,6 +3,14 @@ let openedTabs = [];
 let stopSearchFlag = false;
 let searches = [];
 
+// Limit the search input field to a maximum of 40
+document.getElementById("numSearches").addEventListener("input", function () {
+    const maxAllowed = 40;
+    if (parseInt(this.value) > maxAllowed) {
+        this.value = maxAllowed;
+    }
+});
+
 // Function to fetch search terms from searches.txt
 const fetchSearches = async () => {
     try {
