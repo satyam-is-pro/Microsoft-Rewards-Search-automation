@@ -1,211 +1,154 @@
-/* General Styling */
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Changed to a more modern font */
+    font-family: Arial, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    margin: 0;
-    background: url('bg.jpg') no-repeat center center fixed;
-    background-size: cover;
-    color: #333;
+    background-color: #2179a8;
 }
 
-/* Container Styling */
-#container {
+.container {
+    width: 90%;
+    max-width: 400px;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
-    padding: 30px; /* Increased padding for a more spacious feel */
-    background: rgba(255, 255, 255, 0.95); /* Slightly more opaque for better readability */
-    border-radius: 15px; /* Increased border radius for a softer look */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); /* Enhanced shadow for depth */
-    width: 350px; /* Increased width for better layout */
-    max-width: 90%;
+}
+
+h2 {
+    color: #333;
+    margin-bottom: 16px;
+}
+
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    margin-bottom: 12px;
+    text-align: center;
+    max-width: 100px;
+    display: inline-block;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    margin-top: 8px;
+}
+
+button#startSearches {
+    background-color: #4CAF50;
+}
+
+button#stopSearches {
+    background-color: #ff5722;
+}
+
+button#closeTabs {
+    background-color: #607d8b;
+}
+
+button#instructionsBtn {
+    background: none;
+    color: #007BFF;
+    font-size: 14px;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+button#instructionsBtn:hover {
+    color: #0056b3;
+}
+
+/* Loader styles */
+#loader-container {
+    width: 100%;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    margin-top: 12px;
+    display: none;
     position: relative;
 }
 
-/* Main Title */
-h1 {
-    margin: 0 0 20px;
-    color: #333;
-    font-size: 1.8rem; /* Increased font size for better visibility */
-}
-
-/* Number of Searches Label and Input */
-label {
-    font-size: 1rem;
-    color: #555;
-}
-
-#numSearches {
-    width: 100%;
-    padding: 10px; /* Increased padding for comfort */
-    margin-top: 5px;
-    margin-bottom: 15px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    font-size: 1rem;
-    transition: border 0.3s ease; /* Added transition for input focus */
-}
-
-#numSearches:focus {
-    border-color: #3498db; /* Highlight border on focus */
-    outline: none; /* Remove default outline */
-}
-
-/* Buttons */
-.button-container button {
-    margin: 10px 5px;
-    padding: 12px 15px; /* Increased padding for better touch targets */
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px; /* Increased font size for buttons */
-    width: 100%;
-    transition: background 0.3s ease, transform 0.2s; /* Added transform transition */
-}
-
-#startSearches {
-    background-color: #4CAF50;
-    color: white;
-}
-
-#startSearches:hover {
-    background-color: #45a049; /* Darker shade on hover */
-    transform: scale(1.02); /* Slight scale effect on hover */
-}
-
-#stopSearches {
-    background-color: #f44336;
-    color: white;
-}
-
-#stopSearches:hover {
-    background-color: #e53935; /* Darker shade on hover */
-    transform: scale(1.02); /* Slight scale effect on hover */
-}
-
-#closeTabs {
-    background-color: #555;
-    color: white;
-}
-
-#closeTabs:hover {
-    background-color: #444; /* Darker shade on hover */
-    transform: scale(1.02); /* Slight scale effect on hover */
-}
-
-/* Loader Styling */
-#loader-container {
-    margin-top: 20px;
-    width: 100%;
-    text-align: center;
-    display: none;
-}
-
 #loader-message {
-    font-size: 16px;
-    margin-bottom: 5px;
+    font-size: 14px;
     color: #555;
+    padding: 8px 0;
 }
 
 #progress-bar {
+    height: 5px;
     width: 0;
-    height: 8px; /* Increased height for better visibility */
-    background-color: #3498db;
+    background-color: #4CAF50;
+    border-radius: 4px;
     transition: width 5s linear;
-    border-radius: 3px;
 }
 
-/* Instructions Button as Text */
-#instructionsBtn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    cursor: pointer;
-    color: #3498db;
-    text-decoration: underline;
-    font-size: 1rem; /* Slightly larger font size */
-}
-
-/* Instructions Pop-up */
-
+/* Instructions Popup */
 #instructionsPopup {
-    display: none;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: rgba(255, 255, 255, 0.95);
-    padding: 25px; /* Increased padding for comfort */
-    border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    z-index: 10;
-    width: 320px;
-    max-width: 90%;
-    color: #333;
-    line-height: 1.6; /* Improved readability */
+    width: 90%;
+    max-width: 300px;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    display: none;
+    text-align: left;
 }
 
-/* Close Button for Instructions Pop-up */
-#closeInstructions {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: transparent;
+#instructionsPopup h3 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+#instructionsPopup p {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
+
+button#closeInstructions {
+    background-color: #f44336;
+    color: #fff;
+    padding: 5px 10px;
     border: none;
-    font-size: 1.2rem;
-    color: #333;
+    border-radius: 4px;
+    font-size: 12px;
     cursor: pointer;
-    transition: color 0.3s ease;
+}
+/* Hide arrows in number input for Chrome, Safari, Edge, and Opera */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
-#closeInstructions:hover {
-    color: #f44336; /* Red color on hover */
+/* Hide arrows in number input for Firefox */
+input[type="number"] {
+    appearance: textfield;
 }
 
-/* Additional improvements */
-
-/* Add a subtle animation to the container */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-#container {
-    animation: fadeIn 0.5s ease-out;
-}
-
-/* Improve focus states for accessibility */
-button:focus, input:focus {
-    outline: 2px solid #3498db;
-    outline-offset: 2px;
-}
-
-/* Add a subtle hover effect to the container */
-#container:hover {
-    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
-    transition: box-shadow 0.3s ease;
-}
-
-/* Style for disabled buttons */
-button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
-/* Responsive adjustments */
-@media (max-width: 480px) {
-    #container {
-        padding: 20px;
-        width: 90%;
-    }
-
-    h1 {
-        font-size: 1.5rem;
-    }
-
-    .button-container button {
-        padding: 10px;
-        font-size: 14px;
-    }
-}
