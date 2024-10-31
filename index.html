@@ -3,42 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bing Search Bot</title>
+    <title>Bing Search Automation</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="container">
-        <h1>Bing Search Automation</h1>
+    <div class="container">
+        <h2>Bing Search Automation</h2>
+        <input type="number" id="numSearches" placeholder="Number of Searches (max 40)" max="40" min="1">
+        <button id="startSearches">Start Searches</button>
+        <button id="stopSearches">Stop Searches</button>
+        <button id="closeTabs">Close All Tabs</button>
+        <button id="instructionsBtn">Instructions</button>
 
-        <!-- Instructions Button as Text -->
-        <p id="instructionsBtn">Instructions</p>
-
-        <!-- Instructions Pop-up -->
-        <div id="instructionsPopup">
-            <button id="closeInstructions">×</button>
-            <p><strong>Instructions:</strong></p>
-            <ul>
-                <li>Ensure pop-ups are enabled in your browser for this website.</li>
-                <li>Maximum number of searches can be is 40.</li>
-                <li>The program opens each search in a new tab with a random delay between 5 to 10 seconds.</li>
-                <li>Click "Stop Searches" to halt the process and "Close All Tabs" to close only the tabs opened by this tool.</li>
-            </ul>
-        </div>
-
-        <label for="numSearches">Number of Searches (Max 40):</label>
-        <input type="number" id="numSearches" value="34" max="40" min="1">
-        
-        <div class="button-container">
-            <button id="startSearches">Start Searches</button>
-            <button id="stopSearches">Stop Searches</button>
-            <button id="closeTabs">Close All Tabs</button>
-        </div>
-
-        <!-- Line Loader -->
-        <div id="loader-container" style="display: none;">
-            <div id="loader-message">Initializing...</div>
+        <!-- Loader Container -->
+        <div id="loader-container">
+            <p id="loader-message">Loading...</p>
             <div id="progress-bar"></div>
         </div>
+    </div>
+
+    <!-- Instructions Popup -->
+    <div id="instructionsPopup">
+        <h3>Instructions</h3>
+        <p>1. Enable pop-ups to allow the opening of search tabs.</p>
+        <p>2. Maximum search count is 40.</p>
+        <p>3. The script opens Bing in new tabs every 5-10 seconds.</p>
+        <button id="closeInstructions">Close</button>
     </div>
 
     <script src="script.js"></script>
