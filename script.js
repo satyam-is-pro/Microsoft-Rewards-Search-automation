@@ -59,7 +59,6 @@ const showLoader = (message) => {
         progressBar.style.width = "100%";
     }, 0);
 
-    // Don't hide loader when searches are in progress
     if (!message.includes("Searches:")) {
         setTimeout(() => {
             loaderContainer.style.display = "none";
@@ -79,10 +78,8 @@ document.getElementById("closeInstructions").addEventListener("click", () => {
 // Function to perform search based on environment
 const performSearch = (query) => {
     if (isBingApp) {
-        // For Bing app, update the current window's location
         window.location.href = `https://www.bing.com/search?pglt=2083&q=${encodeURIComponent(query)}&FORM=ANNTA1&PC=U531`;
     } else {
-        // For desktop browsers, open in new tab
         const newTab = window.open(`https://www.bing.com/search?pglt=2083&q=${encodeURIComponent(query)}&FORM=ANNTA1&PC=U531`, '_blank');
         if (newTab) {
             openedTabs.push(newTab);
@@ -121,13 +118,12 @@ document.getElementById("startSearches").addEventListener("click", async () => {
             showLoader(`Searches: ${currentSearchCount}/${totalSearches} completed`);
         }
 
-        // Set a new random delay between 5 to 10 seconds for the next search
         const randomDelay = Math.random() * 5000 + 5000;
         searchTimeout = setTimeout(startSearch, randomDelay);
     };
 
     showLoader(`Searches started: 0/${totalSearches}`);
-    startSearch(); // Start the first search immediately
+    startSearch();
 });
 
 // Stop searches button
