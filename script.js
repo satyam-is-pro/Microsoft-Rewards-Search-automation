@@ -5,6 +5,22 @@ let searches = [];
 let currentSearchCount = 0;
 let totalSearches = 0;
 
+// Set default value for numSearches input when the page loads
+window.addEventListener("DOMContentLoaded", () => {
+    const numSearchesInput = document.getElementById("numSearches");
+    numSearchesInput.value = 34; // Set default value to 34 on page load
+
+    // Add event listener for the Instructions button
+    document.getElementById("instructionsBtn").addEventListener("click", () => {
+        document.getElementById("instructionsPopup").style.display = "block";
+    });
+
+    // Add event listener for closing the Instructions popup
+    document.getElementById("closeInstructions").addEventListener("click", () => {
+        document.getElementById("instructionsPopup").style.display = "none";
+    });
+});
+
 // Limit the search input field to a maximum of 40
 document.getElementById("numSearches").addEventListener("input", function () {
     const maxAllowed = 40;
@@ -75,6 +91,7 @@ document.getElementById("startSearches").addEventListener("click", async () => {
         await fetchSearches();
     }
 
+    // Ensure the default value is applied if the input is empty
     totalSearches = Math.min(40, parseInt(document.getElementById("numSearches").value) || 34);
     currentSearchCount = 0;
     stopSearchFlag = false;
