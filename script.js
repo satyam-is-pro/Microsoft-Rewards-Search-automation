@@ -4,13 +4,6 @@ let stopSearchFlag = false;
 let searches = [];
 let currentSearchCount = 0;
 let totalSearches = 0;
-let isBingApp = false;
-
-// Detect if running in Bing app by checking user agent
-function checkIfBingApp() {
-    const userAgent = navigator.userAgent.toLowerCase();
-    return userAgent.includes('edg/') || userAgent.includes('edge/');
-}
 
 // Limit the search input field to a maximum of 40
 document.getElementById("numSearches").addEventListener("input", function () {
@@ -20,7 +13,7 @@ document.getElementById("numSearches").addEventListener("input", function () {
     }
 });
 
-// Function to fetch search terms from searches.txt
+// Fetch search terms from searches.txt
 const fetchSearches = async () => {
     try {
         const response = await fetch('searches.txt');
@@ -33,7 +26,7 @@ const fetchSearches = async () => {
     }
 };
 
-// Function to get a random search term that isn't immediately repeated
+// Get a random search term without immediate repetition
 const getRandomSearchTerm = (previousTerm) => {
     if (searches.length === 0) return null;
 
@@ -45,7 +38,7 @@ const getRandomSearchTerm = (previousTerm) => {
     return randomTerm;
 };
 
-// Function to show and animate the line loader with a message
+// Show loader message
 const showLoader = (message) => {
     const loaderContainer = document.getElementById("loader-container");
     const loaderMessage = document.getElementById("loader-message");
@@ -66,24 +59,13 @@ const showLoader = (message) => {
     }
 };
 
-// Instructions Pop-up Controls
-document.getElementById("instructionsBtn").addEventListener("click", () => {
-    document.getElementById("instructionsPopup").style.display = "block";
-});
-
-document.getElementById("closeInstructions").addEventListener("click", () => {
-    document.getElementById("instructionsPopup").style.display = "none";
-});
-
-// Function to perform search based on environment
+// Open search in a new tab
 const performSearch = (query) => {
-    if (isBingApp) {
-        window.location.href = `https://www.bing.com/search?pglt=2083&q=${encodeURIComponent(query)}&FORM=ANNTA1&PC=U531`;
+    const newTab = window.open(`https://www.bing.com/search?pglt=2083&q=${encodeURIComponent(query)}&FORM=ANNTA1&PC=U531`, '_blank');
+    if (newTab) {
+        openedTabs.push(newTab);
     } else {
-        const newTab = window.open(`https://www.bing.com/search?pglt=2083&q=${encodeURIComponent(query)}&FORM=ANNTA1&PC=U531`, '_blank');
-        if (newTab) {
-            openedTabs.push(newTab);
-        }
+        console.error("Could not open new tab");
     }
 };
 
@@ -93,13 +75,12 @@ document.getElementById("startSearches").addEventListener("click", async () => {
         await fetchSearches();
     }
 
-    isBingApp = checkIfBingApp();
     totalSearches = Math.min(40, parseInt(document.getElementById("numSearches").value) || 34);
     currentSearchCount = 0;
-    showLoader(`Starting searches: 0/${totalSearches} completed`);
-    
     stopSearchFlag = false;
     let lastSearchTerm = "";
+
+    showLoader(`Starting searches: 0/${totalSearches} completed`);
 
     const startSearch = () => {
         if (stopSearchFlag || currentSearchCount >= totalSearches) {
@@ -118,12 +99,12 @@ document.getElementById("startSearches").addEventListener("click", async () => {
             showLoader(`Searches: ${currentSearchCount}/${totalSearches} completed`);
         }
 
+        // Set a delay between searches (e.g., 5-10 seconds)
         const randomDelay = Math.random() * 5000 + 5000;
         searchTimeout = setTimeout(startSearch, randomDelay);
     };
 
-    showLoader(`Searches started: 0/${totalSearches}`);
-    startSearch();
+    startSearch(); // Begin search
 });
 
 // Stop searches button
@@ -133,13 +114,9 @@ document.getElementById("stopSearches").addEventListener("click", () => {
     showLoader(`Searches stopped at ${currentSearchCount}/${totalSearches}`);
 });
 
-// Close tabs button
+// Close all opened tabs button
 document.getElementById("closeTabs").addEventListener("click", () => {
-    if (!isBingApp) {
-        openedTabs.forEach(tab => tab.close());
-        openedTabs = [];
-        showLoader("All opened search tabs closed.");
-    } else {
-        showLoader("Tab closing not available in Bing app mode.");
-    }
+    openedTabs.forEach(tab => tab.close());
+    openedTabs = [];
+    showLoader("All opened search tabs closed.");
 });
