@@ -2,6 +2,15 @@ let searchTimeout;
 let openedTabs = [];
 let stopSearchFlag = false;
 let searches = [];
+let currentSearchCount = 0;
+let totalSearches = 0;
+let isBingApp = false;
+
+// Detect if running in Bing app by checking user agent
+function checkIfBingApp() {
+    const userAgent = navigator.userAgent.toLowerCase();
+    return userAgent.includes('edg/') || userAgent.includes('edge/');
+}
 
 // Limit the search input field to a maximum of 40
 document.getElementById("numSearches").addEventListener("input", function () {
@@ -24,7 +33,7 @@ const fetchSearches = async () => {
     }
 };
 
-// Function to get a random search term that isn’t immediately repeated
+// Function to get a random search term that isn't immediately repeated
 const getRandomSearchTerm = (previousTerm) => {
     if (searches.length === 0) return null;
 
@@ -50,9 +59,12 @@ const showLoader = (message) => {
         progressBar.style.width = "100%";
     }, 0);
 
-    setTimeout(() => {
-        loaderContainer.style.display = "none";
-    }, 5000);
+    // Don't hide loader when searches are in progress
+    if (!message.includes("Searches:")) {
+        setTimeout(() => {
+            loaderContainer.style.display = "none";
+        }, 5000);
+    }
 };
 
 // Instructions Pop-up Controls
@@ -64,23 +76,38 @@ document.getElementById("closeInstructions").addEventListener("click", () => {
     document.getElementById("instructionsPopup").style.display = "none";
 });
 
+// Function to perform search based on environment
+const performSearch = (query) => {
+    if (isBingApp) {
+        // For Bing app, update the current window's location
+        window.location.href = `https://www.bing.com/search?pglt=2083&q=${encodeURIComponent(query)}&FORM=ANNTA1&PC=U531`;
+    } else {
+        // For desktop browsers, open in new tab
+        const newTab = window.open(`https://www.bing.com/search?pglt=2083&q=${encodeURIComponent(query)}&FORM=ANNTA1&PC=U531`, '_blank');
+        if (newTab) {
+            openedTabs.push(newTab);
+        }
+    }
+};
+
 // Start searches button
 document.getElementById("startSearches").addEventListener("click", async () => {
     if (searches.length === 0) {
         await fetchSearches();
     }
 
-    const numSearches = Math.min(40, parseInt(document.getElementById("numSearches").value) || 34);
-    showLoader(`Searches set to ${numSearches}.`);
+    isBingApp = checkIfBingApp();
+    totalSearches = Math.min(40, parseInt(document.getElementById("numSearches").value) || 34);
+    currentSearchCount = 0;
+    showLoader(`Starting searches: 0/${totalSearches} completed`);
     
     stopSearchFlag = false;
-    let searchCount = 0;
     let lastSearchTerm = "";
 
     const startSearch = () => {
-        if (stopSearchFlag || searchCount >= numSearches) {
+        if (stopSearchFlag || currentSearchCount >= totalSearches) {
             if (searchTimeout) clearTimeout(searchTimeout);
-            if (searchCount > 0) {
+            if (currentSearchCount > 0) {
                 showLoader("All searches completed.");
             }
             return;
@@ -88,14 +115,10 @@ document.getElementById("startSearches").addEventListener("click", async () => {
 
         const query = getRandomSearchTerm(lastSearchTerm);
         if (query) {
-            const url = `https://www.bing.com/search?pglt=2083&q=${encodeURIComponent(query)}&FORM=ANNTA1&PC=U531`;
-            const newTab = window.open(url, '_blank');
-
-            if (newTab) {
-                openedTabs.push(newTab);
-                lastSearchTerm = query;
-                searchCount++;
-            }
+            performSearch(query);
+            lastSearchTerm = query;
+            currentSearchCount++;
+            showLoader(`Searches: ${currentSearchCount}/${totalSearches} completed`);
         }
 
         // Set a new random delay between 5 to 10 seconds for the next search
@@ -103,7 +126,7 @@ document.getElementById("startSearches").addEventListener("click", async () => {
         searchTimeout = setTimeout(startSearch, randomDelay);
     };
 
-    showLoader("Searches started.");
+    showLoader(`Searches started: 0/${totalSearches}`);
     startSearch(); // Start the first search immediately
 });
 
@@ -111,12 +134,16 @@ document.getElementById("startSearches").addEventListener("click", async () => {
 document.getElementById("stopSearches").addEventListener("click", () => {
     stopSearchFlag = true;
     if (searchTimeout) clearTimeout(searchTimeout);
-    showLoader("Searches stopped.");
+    showLoader(`Searches stopped at ${currentSearchCount}/${totalSearches}`);
 });
 
 // Close tabs button
 document.getElementById("closeTabs").addEventListener("click", () => {
-    openedTabs.forEach(tab => tab.close());
-    openedTabs = [];
-    showLoader("All opened search tabs closed.");
+    if (!isBingApp) {
+        openedTabs.forEach(tab => tab.close());
+        openedTabs = [];
+        showLoader("All opened search tabs closed.");
+    } else {
+        showLoader("Tab closing not available in Bing app mode.");
+    }
 });
