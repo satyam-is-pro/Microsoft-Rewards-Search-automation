@@ -9,25 +9,25 @@
 <body>
     <div class="container">
         <h2>Bing Search Automation</h2>
-        <input type="number" id="numSearches" placeholder="Number of Searches" max="40" min="1">
+        <input type="number" id="numSearches" placeholder="Number of Searches" max="40" min="1" value="34">
         <button id="startSearches">Start Searches</button>
         <button id="stopSearches">Stop Searches</button>
         <button id="closeTabs">Close All Tabs</button>
         <button id="instructionsBtn">Instructions</button>
+        <button class="rewards-button" onclick="goToRewards()">Go to Microsoft Rewards</button>
 
-        <!-- Loader Container -->
         <div id="loader-container">
             <p id="loader-message">Loading...</p>
             <div id="progress-bar"></div>
         </div>
     </div>
 
-    <!-- Instructions Popup -->
     <div id="instructionsPopup">
         <h3>Instructions</h3>
         <p>1. Enable pop-ups to allow the opening of search tabs.</p>
         <p>2. Maximum search count is 40.</p>
-        <p>3. The script opens Bing in new tabs every 5-10 seconds.</p>
+        <p>3. Preset search count is 34.</p>
+        <p>4. The script opens Bing in new tabs every 5-10 seconds.</p>
         <button id="closeInstructions">Close</button>
     </div>
 
