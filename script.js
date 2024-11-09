@@ -5,23 +5,18 @@ let searches = [];
 let currentSearchCount = 0;
 let totalSearches = 0;
 
-// Set default value for numSearches input when the page loads
 window.addEventListener("DOMContentLoaded", () => {
     const numSearchesInput = document.getElementById("numSearches");
-    numSearchesInput.value = 34; // Set default value to 34 on page load
 
-    // Add event listener for the Instructions button
     document.getElementById("instructionsBtn").addEventListener("click", () => {
         document.getElementById("instructionsPopup").style.display = "block";
     });
 
-    // Add event listener for closing the Instructions popup
     document.getElementById("closeInstructions").addEventListener("click", () => {
         document.getElementById("instructionsPopup").style.display = "none";
     });
 });
 
-// Limit the search input field to a maximum of 40
 document.getElementById("numSearches").addEventListener("input", function () {
     const maxAllowed = 40;
     if (parseInt(this.value) > maxAllowed) {
@@ -29,7 +24,6 @@ document.getElementById("numSearches").addEventListener("input", function () {
     }
 });
 
-// Fetch search terms from searches.txt
 const fetchSearches = async () => {
     try {
         const response = await fetch('searches.txt');
@@ -42,7 +36,6 @@ const fetchSearches = async () => {
     }
 };
 
-// Get a random search term without immediate repetition
 const getRandomSearchTerm = (previousTerm) => {
     if (searches.length === 0) return null;
 
@@ -54,7 +47,6 @@ const getRandomSearchTerm = (previousTerm) => {
     return randomTerm;
 };
 
-// Show loader message
 const showLoader = (message) => {
     const loaderContainer = document.getElementById("loader-container");
     const loaderMessage = document.getElementById("loader-message");
@@ -75,7 +67,6 @@ const showLoader = (message) => {
     }
 };
 
-// Open search in a new tab
 const performSearch = (query) => {
     const newTab = window.open(`https://www.bing.com/search?pglt=2083&q=${encodeURIComponent(query)}&FORM=ANNTA1&PC=U531`, '_blank');
     if (newTab) {
@@ -85,13 +76,11 @@ const performSearch = (query) => {
     }
 };
 
-// Start searches button
 document.getElementById("startSearches").addEventListener("click", async () => {
     if (searches.length === 0) {
         await fetchSearches();
     }
 
-    // Ensure the default value is applied if the input is empty
     totalSearches = Math.min(40, parseInt(document.getElementById("numSearches").value) || 34);
     currentSearchCount = 0;
     stopSearchFlag = false;
@@ -116,24 +105,24 @@ document.getElementById("startSearches").addEventListener("click", async () => {
             showLoader(`Searches: ${currentSearchCount}/${totalSearches} completed`);
         }
 
-        // Set a delay between searches (e.g., 5-10 seconds)
         const randomDelay = Math.random() * 5000 + 5000;
         searchTimeout = setTimeout(startSearch, randomDelay);
     };
 
-    startSearch(); // Begin search
+    startSearch();
 });
 
-// Stop searches button
 document.getElementById("stopSearches").addEventListener("click", () => {
     stopSearchFlag = true;
     if (searchTimeout) clearTimeout(searchTimeout);
     showLoader(`Searches stopped at ${currentSearchCount}/${totalSearches}`);
 });
 
-// Close all opened tabs button
 document.getElementById("closeTabs").addEventListener("click", () => {
     openedTabs.forEach(tab => tab.close());
     openedTabs = [];
     showLoader("All opened search tabs closed.");
 });
+function goToRewards() {
+    window.open("https://rewards.microsoft.com", "_blank");
+}
